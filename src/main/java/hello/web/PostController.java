@@ -17,38 +17,38 @@ import hello.service.PostService;
 @RequestMapping("/post")
 public class PostController {
 
-    @Autowired
-    private PostService postService;
+	@Autowired
+	private PostService postService;
 
-    @RequestMapping(value = "/write", method = RequestMethod.GET)
-    public String form(Post post) {
-        return "form";
-    }
+	@RequestMapping(value = "/write", method = RequestMethod.GET)
+	public String form(Post post) {
+		return "form";
+	}
 
-    @RequestMapping(value = "/write", method = RequestMethod.POST)
-    public String write(Post post) {
-        post.setRegDate(new Date());
-        return "redirect:/post/" + postService.savePost(post).getId();
-    }
+	@RequestMapping(value = "/write", method = RequestMethod.POST)
+	public String write(Post post) {
+		post.setRegDate(new Date());
+		return "redirect:/post/" + postService.savePost(post).getId();
+	}
 
-    @RequestMapping("/{id}/delete")
-    public String delete(@PathVariable int id) {
-        postService.deletePost(id);
-        return "redirect:/post/list";
-    }
+	@RequestMapping("/{id}/delete")
+	public String delete(@PathVariable int id) {
+		postService.deletePost(id);
+		return "redirect:/post/list";
+	}
 
-    @RequestMapping("/list")
-    public String list(Model model) {
-        List<Post> postList = postService.listPost();
-        model.addAttribute("postList", postList);
+	@RequestMapping("/list")
+	public String list(Model model) {
+		List<Post> postList = postService.listAllPost();
+		model.addAttribute("postList", postList);
 
-        return "blog";
-    }
+		return "blog";
+	}
 
-    @RequestMapping("/{id}")
-    public String view(Model model, @PathVariable int id) {
-        Post post = postService.findOne(id);
-        model.addAttribute("post", post);
-        return "post";
-    }
+	@RequestMapping("/{id}")
+	public String view(Model model, @PathVariable int id) {
+		Post post = postService.getPostById(id);
+		model.addAttribute("post", post);
+		return "post";
+	}
 }
